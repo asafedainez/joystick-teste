@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">teste</string>
+    <string name="title_activity_tst">tst</string>
+
+    <string name="title_activity_login_inicial">LoginInicial</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
