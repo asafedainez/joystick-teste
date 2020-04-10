@@ -49,7 +49,7 @@ public class TelaInicial extends AppCompatActivity {
         final EditText ip = findViewById(R.id.editText_IP);
         Button ok = findViewById(R.id.button_OK);
         nome.setText("Ten Cel. Sebastião");
-        ip.setText("123.123.123.123");
+        ip.setText("192.168.0.54");
 
 
 //        SimpleMaskFormatter smf = new SimpleMaskFormatter("NNN.NNN.NNN.NNN");

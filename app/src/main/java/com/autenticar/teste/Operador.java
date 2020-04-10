@@ -3,25 +3,36 @@ package com.autenticar.teste;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.UUID;
 
 
 public class Operador extends AppCompatActivity {
 
-    TextView direcao, potencia, angulo, led, agente, ip;
+    TextView direcao, potencia, angulo, led, agente, ip, uuid;
     boolean ledIR = false;
     RelativeLayout layout_joystick;
     JoyStickClass js;
     String ipServer, nomeAgente;
+    UUID myUUID;
+    Conexao connect;
+    int power;
+    String direction = "Parado";
+
+
+    private Handler handler = new Handler();
 
 
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -53,6 +64,7 @@ public class Operador extends AppCompatActivity {
 
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +83,7 @@ public class Operador extends AppCompatActivity {
         angulo = findViewById(R.id.textView_seekbarAngulo);
         agente = findViewById(R.id.textView_Operador);
         ip = findViewById(R.id.textView_ip);
+        uuid = findViewById(R.id.textView_UUID);
 
 
 //        nomeAgente = "CB. Juvenal";
@@ -89,6 +102,23 @@ public class Operador extends AppCompatActivity {
         }
 
 
+
+        new Thread(){
+            public void run() {
+                connect = new Conexao(ipServer, nomeAgente);
+
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(connect != null) {
+                            myUUID = connect.getMyUUID();
+                            uuid.setText("UUID: " + myUUID.toString());
+                        }
+                    }
+                });
+            }
+        }.run();
 
 
 
@@ -160,32 +190,67 @@ public class Operador extends AppCompatActivity {
                     else if(pot < 0)
                         pot = 0;
                     pot = pot/2;  //normalizando potencia para 0-100
-                    potencia.setText("Potência: " + String.valueOf((int)pot) + "%");
+                    potencia.setText("Potência: " + (int)pot + "%");
+                    power = (int)pot;
 
                     int dir = js.get8Direction();
                     if (dir == JoyStickClass.STICK_UP) {
                         direcao.setText("Direção: Frente");
+                        direction = "Frente";
                     } else if (dir == JoyStickClass.STICK_UPRIGHT) {
                         direcao.setText("Direção: Frente Direita");
+                        direction = "Frente Direita";
                     } else if (dir == JoyStickClass.STICK_RIGHT) {
                         direcao.setText("Direção: Direita");
+                        direction = "Direita";
                     } else if (dir == JoyStickClass.STICK_DOWNRIGHT) {
                         direcao.setText("Direção: Atrás Direita");
+                        direction = "Atrás Direita";
                     } else if (dir == JoyStickClass.STICK_DOWN) {
                         direcao.setText("Direção: Atrás");
+                        direction = "Atrás";
                     } else if (dir == JoyStickClass.STICK_DOWNLEFT) {
                         direcao.setText("Direção: Atrás Esquerda");
+                        direction = "Atrás Esquerda";
                     } else if (dir == JoyStickClass.STICK_LEFT) {
                         direcao.setText("Direção: Esquerda");
+                        direction = "Esquerda";
                     } else if (dir == JoyStickClass.STICK_UPLEFT) {
                         direcao.setText("Direção: Frente Esquerda");
+                        direction = "Frente Esquerda";
                     } else if (dir == JoyStickClass.STICK_NONE) {
                         direcao.setText("Direção: Parado");
+                        direction = "Parado";
                     }
+
+                    new Thread(){
+                        public void run(){
+                            try {
+                                Thread.sleep(100);
+                                try {
+                                    sendAction(direction, power);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }.run();
+
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     direcao.setText("Direção:");
                     potencia.setText("Potência:");
+                    direction = "Parado";
+                    power = 0;
+
+                    try {
+                        sendAction(direction, power);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                 }
                 return true;
@@ -195,6 +260,10 @@ public class Operador extends AppCompatActivity {
 
     }
 
+    private void sendAction(String direcao, int potencia) throws IOException {
+        connect.sendAction(direcao, potencia);
+
+    }
 
 
 }
