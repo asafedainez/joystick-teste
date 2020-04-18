@@ -111,9 +111,11 @@ public class Operador extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if(connect != null) {
+                        if(connect.getMyUUID() != null) {
                             myUUID = connect.getMyUUID();
                             uuid.setText("UUID: " + myUUID.toString());
+                        }else{
+                            uuid.setText("Conexão mal sucedida");
                         }
                     }
                 });

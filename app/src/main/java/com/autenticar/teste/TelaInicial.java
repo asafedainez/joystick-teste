@@ -48,7 +48,7 @@ public class TelaInicial extends AppCompatActivity {
         final EditText nome = findViewById(R.id.editText_nome);
         final EditText ip = findViewById(R.id.editText_IP);
         Button ok = findViewById(R.id.button_OK);
-        nome.setText("Ten Cel. Sebastião");
+        nome.setText("TESTE APP");
         ip.setText("192.168.0.54");
 
 

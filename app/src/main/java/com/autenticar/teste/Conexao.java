@@ -10,18 +10,24 @@ import java.util.UUID;
 
 import lac.cnclib.net.NodeConnection;
 import lac.cnclib.net.NodeConnectionListener;
+import lac.cnclib.net.groups.Group;
+import lac.cnclib.net.groups.GroupCommunicationManager;
+import lac.cnclib.net.groups.GroupMembershipListener;
 import lac.cnclib.net.mrudp.MrUdpNodeConnection;
 import lac.cnclib.sddl.message.ApplicationMessage;
 import lac.cnclib.sddl.message.Message;
 
 
-public class Conexao implements NodeConnectionListener {
+public class Conexao implements NodeConnectionListener, GroupMembershipListener {
 
     private static int gatewayPort  = 5500;
     private MrUdpNodeConnection connection;
     private UUID myUUID;
     private String nome;
     private boolean isConnect;
+    private GroupCommunicationManager groupManager;
+    private Group aGroup;
+
 
     public Conexao(String IP, String nome){
         this.nome = nome;
@@ -31,6 +37,8 @@ public class Conexao implements NodeConnectionListener {
             connection = new MrUdpNodeConnection();
             connection.addNodeConnectionListener(this);
             connection.connect(address);
+
+            aGroup = new Group(250,1);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -41,10 +49,15 @@ public class Conexao implements NodeConnectionListener {
         ApplicationMessage message = new ApplicationMessage();
         message.setContentObject("Conectando "+ this.nome);
         myUUID = connection.getUuid();
-        this.isConnect = true;
+        groupManager = new GroupCommunicationManager(nodeConnection);
+
+        groupManager.addMembershipListener(this);
+        if(connection.getUuid() != null)
+            this.isConnect = true;
 
         try{
             connection.sendMessage(message);
+            groupManager.joinGroup(aGroup);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -89,9 +102,34 @@ public class Conexao implements NodeConnectionListener {
         ApplicationMessage action = new ApplicationMessage();
         action.setContentObject("Direção: " + direcao + " - Potência: " + potencia + "%");
         connection.sendMessage(action);
+
+        try {
+            groupManager.sendGroupcastMessage(action, aGroup);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public UUID getMyUUID() {
         return myUUID;
+    }
+
+    @Override
+    public void enteringGroups(List<Group> list) {
+        Log.i("Alerta","Entrando em grupo" );
+
+        ApplicationMessage appMsg = new ApplicationMessage();
+        appMsg.setContentObject("Hello Group");
+        try {
+            groupManager.sendGroupcastMessage(appMsg, aGroup);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void leavingGroups(List<Group> list) {
+
     }
 }
