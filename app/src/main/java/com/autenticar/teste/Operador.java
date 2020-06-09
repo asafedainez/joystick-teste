@@ -28,7 +28,7 @@ public class Operador extends AppCompatActivity {
     String ipServer, nomeAgente;
     UUID myUUID;
     Conexao connect;
-    int power;
+    int power, angulo_send = 45;
     String direction = "Parado";
 
 
@@ -150,10 +150,11 @@ public class Operador extends AppCompatActivity {
         ang.setProgress(45);
 
         ang.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int prog = 0;
+            int prog = 45;
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 prog = progress;
                 angulo.setText("Ângulo Câmera: " + prog + "°");
+
             }
 
             @Override
@@ -164,6 +165,13 @@ public class Operador extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 angulo.setText("Ângulo Câmera: " + prog + "°");
+                angulo_send = prog;
+
+                try {
+                    sendAction(direction, power, angulo_send);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -228,9 +236,9 @@ public class Operador extends AppCompatActivity {
                     new Thread(){
                         public void run(){
                             try {
-                                Thread.sleep(100);
+                                Thread.sleep(200);
                                 try {
-                                    sendAction(direction, power);
+                                    sendAction(direction, power, angulo_send);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -249,7 +257,7 @@ public class Operador extends AppCompatActivity {
                     power = 0;
 
                     try {
-                        sendAction(direction, power);
+                        sendAction(direction, power, angulo_send);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -262,8 +270,8 @@ public class Operador extends AppCompatActivity {
 
     }
 
-    private void sendAction(String direcao, int potencia) throws IOException {
-        connect.sendAction(direcao, potencia);
+    private void sendAction(String direcao, int potencia, int angulo) throws IOException {
+        connect.sendAction(direcao, potencia, angulo);
 
     }
 

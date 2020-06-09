@@ -16,6 +16,7 @@ import lac.cnclib.net.groups.GroupMembershipListener;
 import lac.cnclib.net.mrudp.MrUdpNodeConnection;
 import lac.cnclib.sddl.message.ApplicationMessage;
 import lac.cnclib.sddl.message.Message;
+import lac.cnet.sddl.objects.PrivateMessage;
 
 
 public class Conexao implements NodeConnectionListener, GroupMembershipListener {
@@ -98,13 +99,15 @@ public class Conexao implements NodeConnectionListener, GroupMembershipListener 
 
     }
 
-    public void sendAction(String direcao, int potencia) throws IOException {
+    public void sendAction(String direcao, int potencia, int angulo) throws IOException {
         ApplicationMessage action = new ApplicationMessage();
-        action.setContentObject("Direção: " + direcao + " - Potência: " + potencia + "%");
-        connection.sendMessage(action);
+        action.setContentObject(direcao + "\n" + potencia + "\n" + angulo);
+        action.setRecipientID(UUID.fromString("788b2b22-baa6-4c61-b1bb-01cff1f5f878"));
+
 
         try {
-            groupManager.sendGroupcastMessage(action, aGroup);
+            connection.sendMessage(action);
+            //groupManager.sendGroupcastMessage(action, aGroup);
         } catch (IOException e) {
             e.printStackTrace();
         }
