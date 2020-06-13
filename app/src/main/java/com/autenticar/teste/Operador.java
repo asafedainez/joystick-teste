@@ -106,17 +106,18 @@ public class Operador extends AppCompatActivity {
         new Thread(){
             public void run() {
                 connect = new Conexao(ipServer, nomeAgente);
-
-
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if(connect.getMyUUID() != null) {
-                            myUUID = connect.getMyUUID();
-                            uuid.setText("UUID: " + myUUID.toString());
-                        }else{
-                            uuid.setText("Conexão mal sucedida");
-                        }
+                        do {
+                            if (connect.getMyUUID() != null) {
+                                myUUID = connect.getMyUUID();
+                                uuid.setText("UUID: " + myUUID.toString());
+                            } else {
+                                uuid.setText("Conexão mal sucedida");
+                            }
+                        }while(connect.getMyUUID() == null);
+
                     }
                 });
             }
@@ -209,25 +210,25 @@ public class Operador extends AppCompatActivity {
                         direction = "Frente";
                     } else if (dir == JoyStickClass.STICK_UPRIGHT) {
                         direcao.setText("Direção: Frente Direita");
-                        direction = "Frente Direita";
+                        direction = "FrenteDireita";
                     } else if (dir == JoyStickClass.STICK_RIGHT) {
                         direcao.setText("Direção: Direita");
                         direction = "Direita";
                     } else if (dir == JoyStickClass.STICK_DOWNRIGHT) {
                         direcao.setText("Direção: Atrás Direita");
-                        direction = "Atrás Direita";
+                        direction = "AtrásDireita";
                     } else if (dir == JoyStickClass.STICK_DOWN) {
                         direcao.setText("Direção: Atrás");
                         direction = "Atrás";
                     } else if (dir == JoyStickClass.STICK_DOWNLEFT) {
                         direcao.setText("Direção: Atrás Esquerda");
-                        direction = "Atrás Esquerda";
+                        direction = "AtrásEsquerda";
                     } else if (dir == JoyStickClass.STICK_LEFT) {
                         direcao.setText("Direção: Esquerda");
                         direction = "Esquerda";
                     } else if (dir == JoyStickClass.STICK_UPLEFT) {
                         direcao.setText("Direção: Frente Esquerda");
-                        direction = "Frente Esquerda";
+                        direction = "FrenteEsquerda";
                     } else if (dir == JoyStickClass.STICK_NONE) {
                         direcao.setText("Direção: Parado");
                         direction = "Parado";
@@ -235,17 +236,21 @@ public class Operador extends AppCompatActivity {
 
                     new Thread(){
                         public void run(){
-                            try {
-                                Thread.sleep(200);
-                                try {
-                                    sendAction(direction, power, angulo_send);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(200);
+                                        try {
+                                            sendAction(direction, power, angulo_send);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
+                            });
                         }
                     }.run();
 

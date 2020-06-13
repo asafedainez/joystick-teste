@@ -23,7 +23,7 @@ public class Conexao implements NodeConnectionListener, GroupMembershipListener 
 
     private static int gatewayPort  = 5500;
     private MrUdpNodeConnection connection;
-    private UUID myUUID;
+    private UUID myUUID, uuidVTNT, uuidVTNT1;
     private String nome;
     private boolean isConnect;
     private GroupCommunicationManager groupManager;
@@ -86,6 +86,14 @@ public class Conexao implements NodeConnectionListener, GroupMembershipListener 
 //        Toast.makeText(this.context, message.getContentObject().toString(), Toast.LENGTH_SHORT).show();
         Log.i("Nova Mensagem", message.getContentObject().toString());
 
+//        if(uuidVTNT == null){
+//            String[] t = message.getContentObject().toString().split(" ");
+//            if ("001x".equals(t[0])){
+//                uuidVTNT = UUID.fromString(t[1]);
+//                uuidVTNT1 = message.getSenderID();
+//            }
+//        }
+
     }
 
     @Override
@@ -101,13 +109,16 @@ public class Conexao implements NodeConnectionListener, GroupMembershipListener 
 
     public void sendAction(String direcao, int potencia, int angulo) throws IOException {
         ApplicationMessage action = new ApplicationMessage();
-        action.setContentObject(direcao + "\n" + potencia + "\n" + angulo);
-        action.setRecipientID(UUID.fromString("788b2b22-baa6-4c61-b1bb-01cff1f5f878"));
+        action.setContentObject("ctrl" + " " +  direcao + " " + potencia + " " + angulo);
+//        action.setRecipientID(uuidVTNT);
+
+//        ApplicationMessage action1 = new ApplicationMessage();
+//        action1.setContentObject("ctrl" + " " +  direcao + " " + potencia + " " + angulo);
+//        action1.setRecipientID(uuidVTNT1);
 
 
         try {
-            connection.sendMessage(action);
-            //groupManager.sendGroupcastMessage(action, aGroup);
+            groupManager.sendGroupcastMessage(action, aGroup);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,18 +132,25 @@ public class Conexao implements NodeConnectionListener, GroupMembershipListener 
     public void enteringGroups(List<Group> list) {
         Log.i("Alerta","Entrando em grupo" );
 
-        ApplicationMessage appMsg = new ApplicationMessage();
-        appMsg.setContentObject("Hello Group");
-        try {
-            groupManager.sendGroupcastMessage(appMsg, aGroup);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        ApplicationMessage appMsg = new ApplicationMessage();
+//        appMsg.setContentObject("Hello Group");
+//        try {
+//            groupManager.sendGroupcastMessage(appMsg, aGroup);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
     @Override
     public void leavingGroups(List<Group> list) {
+        ApplicationMessage appMsg = new ApplicationMessage();
+        appMsg.setContentObject("Até mais! De "+nome);
+        try {
+            groupManager.sendGroupcastMessage(appMsg, aGroup);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
