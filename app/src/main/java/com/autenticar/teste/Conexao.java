@@ -23,11 +23,12 @@ public class Conexao implements NodeConnectionListener, GroupMembershipListener 
 
     private static int gatewayPort  = 5500;
     private MrUdpNodeConnection connection;
-    private UUID myUUID, uuidVTNT, uuidVTNT1;
+    private UUID myUUID;
     private String nome;
     private boolean isConnect;
     private GroupCommunicationManager groupManager;
     private Group aGroup;
+    String IP_VTNT;
 
 
     public Conexao(String IP, String nome){
@@ -86,15 +87,16 @@ public class Conexao implements NodeConnectionListener, GroupMembershipListener 
 //        Toast.makeText(this.context, message.getContentObject().toString(), Toast.LENGTH_SHORT).show();
         Log.i("Nova Mensagem", message.getContentObject().toString());
 
-//        if(uuidVTNT == null){
-//            String[] t = message.getContentObject().toString().split(" ");
-//            if ("001x".equals(t[0])){
-//                uuidVTNT = UUID.fromString(t[1]);
-//                uuidVTNT1 = message.getSenderID();
-//            }
-//        }
-
+        String[] t = message.getContentObject().toString().split(" ");
+        if ("001x".equals(t[0])){
+            IP_VTNT = t[1];
+        }
     }
+
+    public String getIP_VTNT(){
+        return IP_VTNT;
+    }
+
 
     @Override
     public void unsentMessages(NodeConnection nodeConnection, List<Message> list) {

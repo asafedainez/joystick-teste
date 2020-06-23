@@ -9,6 +9,16 @@
     android:orientation="horizontal"
     tools:context=".Operador">
 
+
+    <VideoView
+        android:id="@+id/videoView_Operador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <RelativeLayout
         android:id="@+id/relativeLayout_JoystickBase"
         android:layout_width="200dp"
@@ -37,7 +47,7 @@
 
 
     <TextView
-        android:id="@+id/textView_Operador"
+        android:id="@+id/textView_observador"
         android:layout_width="300dp"
         android:layout_height="25dp"
         android:layout_marginEnd="16dp"
@@ -62,55 +72,55 @@
         app:layout_constraintStart_toEndOf="@+id/relativeLayout_JoystickBase"
         app:layout_constraintTop_toBottomOf="@+id/button_IR" />
 
-    <TextView
-        android:id="@+id/textView_direcao"
-        android:layout_width="210dp"
-        android:layout_height="22dp"
-        android:text="Direção: "
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView_potencia"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView_direcao"-->
+<!--        android:layout_width="210dp"-->
+<!--        android:layout_height="22dp"-->
+<!--        android:text="Direção: "-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textView_potencia"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.529"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="1.0" />-->
 
-    <TextView
-        android:id="@+id/textView_potencia"
-        android:layout_width="210dp"
-        android:layout_height="22dp"
-        android:text="Potência: "
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView_botaoIR"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView_potencia"-->
+<!--        android:layout_width="210dp"-->
+<!--        android:layout_height="22dp"-->
+<!--        android:text="Potência: "-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textView_botaoIR"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.529"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
-    <TextView
-        android:id="@+id/textView_botaoIR"
-        android:layout_width="210dp"
-        android:layout_height="22dp"
-        android:text="LED IR: "
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView_seekbarAngulo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView_botaoIR"-->
+<!--        android:layout_width="210dp"-->
+<!--        android:layout_height="22dp"-->
+<!--        android:text="LED IR: "-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textView_seekbarAngulo"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.529"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
-    <TextView
-        android:id="@+id/textView_seekbarAngulo"
-        android:layout_width="210dp"
-        android:layout_height="22dp"
-        android:text="Ângulo Câmera: "
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView_UUID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView_seekbarAngulo"-->
+<!--        android:layout_width="210dp"-->
+<!--        android:layout_height="22dp"-->
+<!--        android:text="Ângulo Câmera: "-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textView_UUID"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.529"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
     <TextView
         android:id="@+id/textView_DescricaoAng"
@@ -128,7 +138,7 @@
         app:layout_constraintVertical_bias="0.625" />
 
     <TextView
-        android:id="@+id/textView_ip"
+        android:id="@+id/textView_ip_observador"
         android:layout_width="200dp"
         android:layout_height="21dp"
         android:layout_marginEnd="16dp"
@@ -140,7 +150,7 @@
         app:layout_constraintEnd_toStartOf="@+id/button_IR"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_Operador"
+        app:layout_constraintTop_toBottomOf="@+id/textView_observador"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -157,18 +167,22 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.07" />
 
-    <TextView
-        android:id="@+id/textView_UUID"
-        android:layout_width="288dp"
-        android:layout_height="57dp"
-        android:layout_marginBottom="96dp"
-        android:text="UUID: "
-        android:textAlignment="textStart"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.623"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView_UUID"-->
+<!--        android:layout_width="288dp"-->
+<!--        android:layout_height="57dp"-->
+<!--        android:layout_marginBottom="96dp"-->
+<!--        android:text="UUID: "-->
+<!--        android:textAlignment="textStart"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.623"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

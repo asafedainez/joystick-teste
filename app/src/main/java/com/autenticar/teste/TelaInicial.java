@@ -47,7 +47,8 @@ public class TelaInicial extends AppCompatActivity {
 
         final EditText nome = findViewById(R.id.editText_nome);
         final EditText ip = findViewById(R.id.editText_IP);
-        Button ok = findViewById(R.id.button_OK);
+        Button operador = findViewById(R.id.button_Operador);
+        Button observador = findViewById(R.id.button_Observador);
         nome.setText("TESTE APP");
         ip.setText("192.168.0.54");
 
@@ -58,7 +59,7 @@ public class TelaInicial extends AppCompatActivity {
 
 
 
-        ok.setOnClickListener(new View.OnClickListener() {
+        operador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -72,6 +73,20 @@ public class TelaInicial extends AppCompatActivity {
                 startActivity(intent);
 
 
+            }
+        });
+
+        observador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle params = new Bundle();
+                params.putString("nome",nome.getText().toString());
+                params.putString("ip",ip.getText().toString());
+
+
+                Intent intent = new Intent(getApplicationContext(), Observador.class);
+                intent.putExtras(params);
+                startActivity(intent);
             }
         });
 
