@@ -3,20 +3,27 @@ package com.autenticar.teste;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import java.io.InputStream;
 
 public class Observador extends AppCompatActivity {
 
 
     private Handler handler = new Handler();
-    VideoView videoRpi;
+    WebView videoRpi;
     String ipServer, nomeAgente;
     TextView ip, agente;
     Conexao connect;
@@ -52,7 +59,7 @@ public class Observador extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_observador);
 
-        videoRpi = findViewById(R.id.videoView_Rpi);
+        videoRpi = findViewById(R.id.webview_RPI);
         agente = findViewById(R.id.textView_observador);
         ip = findViewById(R.id.textView_ip_observador);
 
@@ -89,22 +96,23 @@ public class Observador extends AppCompatActivity {
             }
         }.run();
 
-        String url = "http://" + "192.168.0.43"//connect.getIP_VTNT()
-                + "/rpi-cam/cam_pic_new.php";
+        String url = "http://" + "192.168.0.43" + "/rpi-cam/cam_pic_new.php";
 
-        videoRpi.setVideoURI(Uri.parse(url));
-        videoRpi.start();
-        videoRpi.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                Log.i("ERRO","ERRO AO REPRODUZIR VÍDEO");
-                return true;
-            }
-        });
+//        videoRpi_Operador.setVideoURI(Uri.parse(url));
+//        videoRpi_Operador.start();
+//        videoRpi_Operador.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+//            @Override
+//            public boolean onError(MediaPlayer mp, int what, int extra) {
+//                Log.i("ERRO","ERRO AO REPRODUZIR VÍDEO");
+//                return true;
+//            }
+//        });
 
-
+        videoRpi.loadUrl(url);
+        videoRpi.getSettings().setBuiltInZoomControls(true);
 
 
 
     }
+
 }

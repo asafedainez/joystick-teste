@@ -126,6 +126,17 @@ public class Conexao implements NodeConnectionListener, GroupMembershipListener 
         }
     }
 
+    public void sendLEDIR(boolean ledIR){
+        ApplicationMessage action = new ApplicationMessage();
+        action.setContentObject("led" + " " + ledIR);
+
+        try {
+            groupManager.sendGroupcastMessage(action, aGroup);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public UUID getMyUUID() {
         return myUUID;
     }

@@ -6,18 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -34,7 +31,7 @@ public class Operador extends AppCompatActivity {
     Conexao connect;
     int power, angulo_send = 45;
     String direction = "Parado";
-    VideoView videoRpi;
+    WebView videoRpi_Operador;
 
 
     private Handler handler = new Handler();
@@ -89,7 +86,7 @@ public class Operador extends AppCompatActivity {
         agente = findViewById(R.id.textView_observador);
         ip = findViewById(R.id.textView_ip_observador);
 //        uuid = findViewById(R.id.textView_UUID);
-        videoRpi = findViewById(R.id.videoView_Operador);
+        videoRpi_Operador = findViewById(R.id.webView_Operador);
 
 
 //        nomeAgente = "CB. Juvenal";
@@ -104,6 +101,7 @@ public class Operador extends AppCompatActivity {
 
                 agente.setText("Operador: " + nomeAgente);
                 ip.setText("IP Server: " + ipServer);
+                botaoIR.setBackgroundColor(Color.GRAY);
             }
         }
 
@@ -136,14 +134,15 @@ public class Operador extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ledIR = !ledIR;
+                connect.sendLEDIR(ledIR);
 
                 if (ledIR) {
                     botaoIR.setBackgroundColor(Color.YELLOW);
-                    led.setText("LED IR: Ativo");
+//                    led.setText("LED IR: Ativo");
                     //mandar comando para ativar LED IR
                 } else {
                     botaoIR.setBackgroundColor(Color.GRAY);
-                    led.setText("LED IR: Desligado");
+//                    led.setText("LED IR: Desligado");
                     //mandar comando para desativar LED IR
                 }
 
@@ -184,20 +183,19 @@ public class Operador extends AppCompatActivity {
         });
 
 
-//        String url = "http://" + "192.168.0.43" + "/rpi-cam/cam_pic_new.php";
+        String url = "http://" + "192.168.0.43" + "/rpi-cam/cam_pic_new.php";
 //
-//        videoRpi.setVideoURI(Uri.parse(url));
-//        videoRpi.start();
-//        videoRpi.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+//        videoRpi_Operador.setVideoURI(Uri.parse(url));
+//        videoRpi_Operador.start();
+//        videoRpi_Operador.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 //            @Override
 //            public boolean onError(MediaPlayer mp, int what, int extra) {
 //                Log.i("ERRO","ERRO AO REPRODUZIR VÍDEO");
 //                return true;
 //            }
 //        });
-
-
-
+        videoRpi_Operador.loadUrl(url);
+        videoRpi_Operador.getSettings().setBuiltInZoomControls(true);
 
 
 
